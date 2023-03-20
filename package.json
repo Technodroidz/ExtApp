@@ -2,6 +2,8 @@
     "name": "extapp-package",
     "version": "1.0.0",
     "description": "Extension App",
+    "author": "Technodroidz",
+    "license": "ISC",
     "private": false,
     "scripts": {
         "dev": "npm run development",
@@ -32,8 +34,12 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/Technodroidz/ExtApp"
-      }
+        "url": "git+https://github.com/Technodroidz/ExtApp.git"
+      },
+      "bugs": {
+        "url": "https://github.com/Technodroidz/ExtApp/issues"
+      },
+      "homepage": "https://github.com/Technodroidz/ExtApp#readme"
       
 }
   
