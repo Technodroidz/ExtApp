@@ -1,4 +1,4 @@
-name: Laravel GPR Publish
+name: Publish Laravel Package
 
 on:
   push:
@@ -6,21 +6,26 @@ on:
       - main
 
 jobs:
-  publish-gpr:
+  build:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v2
-      - name: Install dependencies
-        run: composer install --no-dev
-      - name: Create package directory
-        run: mkdir my-package
-      - name: Build and publish package
-        run: |
-          php artisan package:discover
-          tar -czvf my-package.tar.gz my-package
-          curl -v \
-            -X PUT \
-            -H "Content-Type: application/octet-stream" \
-            -H "Authorization: Bearer ${{ secrets.PAT }}" \
-            --data-binary @my-package.tar.gz \
-            "https://uploads.github.com/repos/${{ github.repository }}/packages/laravel/my-package/${{ github.sha }}/my-package.tar.gz"
+    - uses: actions/checkout@v2
+    - name: Set up PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '7.4'
+        extensions: mbstring, pdo_mysql
+    - name: Install dependencies
+      run: composer install
+    - name: Build package
+      run: php artisan package:discover && php artisan packager:build
+    - name: Publish to GitHub Packages
+      uses: docker://ghcr.io/docker/build-push-action:v2.8.2
+      with:
+        context: ./
+        push: true
+        tags: ${{ github.repository }}:latest
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
