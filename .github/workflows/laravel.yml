@@ -17,11 +17,9 @@ jobs:
 
       - name: Install dependencies
         run: composer install
-        working-directory: ./WebAndApiExt
           
       - name: Build package
         run: php artisan package:discover && composer build
-        working-directory: ./WebAndApiExt
 
       - name: Publish package
         uses: softprops/action-gh-release@v1
@@ -40,7 +38,6 @@ jobs:
             
       - name: Install dependencies
         run: npm install
-        working-directory: ./WebAndApiExt
 
   publish-gpr:
     needs: build-and-test
@@ -62,6 +59,5 @@ jobs:
           auth-token: ${{ secrets.NPM }}    
       - name: Publish package
         run: npm publish --access public
-        working-directory: ./WebAndApiExt
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM }}
