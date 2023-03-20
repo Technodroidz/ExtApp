@@ -31,5 +31,5 @@ jobs:
       with:
         context: ./
         push: true
-        tags: "Technodroidz/extapp:latest"
+        tags: ${{ github.repository }}:latest
         registry: ghcr.io
