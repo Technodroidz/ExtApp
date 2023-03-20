@@ -1,0 +1,68 @@
+name: Laravel
+
+on:
+  push:
+    branches:
+      - main  
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Copy .env
+        run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+
+      - name: Install dependencies
+        run: composer install
+        working-directory: ./WebAndApiExt
+          
+      - name: Build package
+        run: php artisan package:discover && composer build
+        working-directory: ./WebAndApiExt
+
+      - name: Publish package
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v${{ github.event.release.tag_name }}
+          release_name: Release ${{ github.event.release.tag_name }}
+          body: ${{ github.event.release.body }}
+          draft: false
+          prerelease: false
+          token: ${{ secrets.PAT }} 
+
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 16
+            
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./WebAndApiExt
+
+  publish-gpr:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 16
+          registry-url: https://npm.pkg.github.com/
+      - name: Authenticate with npm
+        uses: actions/npm@v1
+        with:
+          registry-url: https://npm.pkg.github.com
+          scope: '@phanatic'
+          auth-token: ${{ secrets.PAT }}
+          working-directory: ./WebAndApiExt
+      - name: Publish package
+        run: npm publish --access public
+        working-directory: ./WebAndApiExt
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.PAT }}

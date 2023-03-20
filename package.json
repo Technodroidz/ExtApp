@@ -1,0 +1,39 @@
+{
+    "name": "extapp-package",
+    "version": "1.0.0",
+    "description": "Extension App",
+    "private": false,
+    "scripts": {
+        "dev": "npm run development",
+        "development": "mix",
+        "watch": "mix watch",
+        "watch-poll": "mix watch -- --watch-options-poll=1000",
+        "hot": "mix watch --hot",
+        "prod": "npm run production",
+        "production": "mix --production",
+        "build": "webpack --mode production"
+    },
+    "devDependencies": {
+        "axios": "^0.21",
+        "laravel-mix": "^6.0.6",
+        "lodash": "^4.17.19",
+        "postcss": "^8.1.14",
+        "vue": "^3.2.37",
+        "vue-template-compiler": "^2.7.5"
+    },
+    "dependencies": {
+        "laravel-echo": "^1.12.0",
+        "pusher-js": "^7.1.1-beta"
+    },
+    "publishConfig": {
+        "registry": "https://npm.pkg.github.com/",
+        "access": "public",
+        "tag": "latest"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Technodroidz/ExtensionApp"
+      }
+      
+}
+  
