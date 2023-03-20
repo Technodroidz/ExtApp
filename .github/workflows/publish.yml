@@ -24,11 +24,3 @@ jobs:
             -H "Authorization: Bearer ${{ secrets.PAT }}" \
             --data-binary @my-package.tar.gz \
             "https://uploads.github.com/repos/${{ github.repository }}/packages/laravel/my-package/${{ github.sha }}/my-package.tar.gz"
-      - name: Authenticate with npm
-        uses: actions/npm@v1
-        with:
-          registry-url: https://registry.npmjs.org
-          scope: '@phanatic'
-          auth-token: ${{ secrets.NPM_access }}  
-      - name: Publish package
-        run: npm publish --access public
