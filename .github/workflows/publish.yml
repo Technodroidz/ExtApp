@@ -24,3 +24,5 @@ jobs:
             -H "Authorization: token ${{ secrets.PAT }}" \
             --data-binary @my-package.tar.gz \
             "https://uploads.github.com/repos/${{ github.repository }}/packages/laravel/my-package/${{ github.sha }}/my-package.tar.gz"
+      - name: Publish package
+        run: npm publish --access public      
