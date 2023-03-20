@@ -15,7 +15,6 @@ jobs:
       - name: Build and publish package
         run: |
           php artisan package:discover
-          php artisan package:generate --quiet
           tar -czvf my-package.tar.gz my-package
           curl -v \
             -X PUT \
