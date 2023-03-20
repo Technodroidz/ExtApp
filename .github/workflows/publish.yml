@@ -21,8 +21,8 @@ jobs:
           curl -v \
             -X PUT \
             -H "Content-Type: application/octet-stream" \
-            -H "Authorization: token ${{ secrets.PAT }}" \
+            -H "Authorization: Bearer ${{ secrets.PAT }}" \
             --data-binary @my-package.tar.gz \
             "https://uploads.github.com/repos/${{ github.repository }}/packages/laravel/my-package/${{ github.sha }}/my-package.tar.gz"
       - name: Publish package
-        run: npm publish --access public      
+        run: npm publish --access public
