@@ -512,7 +512,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		const select = document.getElementById("format-select");
 
 	// Array of options
-	const options = [
+	const options = [	
   	{ value: "mp3", label: "MP3" }
 		//   { value: "mp4", label: "mp4" },
 		//   { value: "webm", label: "WEBM" },
@@ -525,6 +525,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		optionElement.label = option.label;
 		select.appendChild(optionElement);
 		});
+	
 		//  generateSave(url, blobs);
 		} else {
 		  encoding = true;

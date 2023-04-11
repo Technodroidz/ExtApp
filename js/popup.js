@@ -493,7 +493,8 @@ $(document).ready(function () {
 
             // }
             // ));
-            if ($('#onlyaudio').change(function(){
+
+            if ($('#hidevideotab').change(function(){
                 if($('#onlyaudio').val() == 'micro' && $('#onlyaudio').val() != 'tabaudio') {
                     $('#mic-label2').show(); 
                     $('#audiorecording').show(); 
