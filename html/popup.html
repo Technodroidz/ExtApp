@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <head>
+    <!-- <meta http-equiv="Content-Security-Policy" content="default-src ’self’; img-src *"> -->
+  </head>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/libraries/nice-select.css">
+  <link rel="stylesheet" href="../css/libraries/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/popup.css">
+</head>
+
+<body>
+  <ul class="nav nav-pills ">
+    <!-- <li class="active"><a data-toggle="pill" href="#home">Home</a></li> -->
+    <!-- <li><a data-toggle="pill" href="#menu1">Menu 1</a></li> -->
+    <li id="showvideotab" class="tabMargin active"><a class="tabVideo" data-toggle="pill" href="#menu2">Video</a></li>
+    <li id="hidevideotab" class="tabMargin"><a class="tabAudio" data-toggle="pill" href="#menu3">Audio</a></li>
+  </ul>
+
+  <div class="tab-content tabMargin">
+
+    <div id="menu2" class="tab-pane fade  in active">
+      <!-- <h3>Video</h3> -->
+      <!-- <p>Eaque ipsa quae ab illo inventore .</p> -->
+    </div>
+    <div id="menu3" class="tab-pane fade">
+      <h5><strong>Record Type</strong> </h5>
+      <!-- <p>Sed ut perspiciatis unde omnis iste.</p> -->
+      <div class="dropdown tabSelectWidth">
+        <select class="ni-select" id="onlyaudio">
+          <!-- <option class="" value="selectAudio">Select Audio Type</option> -->
+          <option id="micAudio" value='micro' >Microphone</option>
+          <option id="tabRecord" value='tabaudio'>Tab Recording</option>
+        </select>
+      </div>
+      <!-- <div id="status"></div> -->
+      <!-- <div id="timeRem"></div> -->
+      <!-- <div id="tabaudiodiv" style="display: none; margin-bottom: 5px" class="buttonContainer">
+            <div class="button" id="start">Start Capture</div>
+            <div class="button" id="finish">Save</div>
+            <div class="button" id="cancel">Cancel</div>          
+          </div> -->
+
+
+    <div id="mic-label2" style="display: none;">
+    <label  for="mic-select2" >Microphone</label>
+    <select class="ni-select">
+      <!-- <option value='Disabled'>Disabled</option> -->
+      <option value='Default'>Default - Microphone Array (Realtek(R) Audio)</option>
+      <option value='Communications'>Communications - Microphone Array (Realtek(R) Audio)</option>
+      <option value='disabled'>Microphone Array (Realtek(R) Audio)</option>
+    </select>
+    </div>
+
+      <div id="audiorecording" style="display: none; margin-bottom: 5px">
+        <button id="audiobtnrecord" type="button" class="recordbtn" name="record">Record</button>
+
+      </div>
+
+      <button id="timerNew" style="display:none; margin-top:20px; position: relative; width: auto; border: none; margin-left: 190; font-weight: bold;font-size: large; border-radius: 4px; background-color: #eee;"></button>
+      <!-- <button id="timerNew" style="display:none; margin-top:20px; position: relative; width: 357px; border: 1px solid #a8a8af; margin-left: 190; font-weight: bold;font-size: large; padding: 22px; border-radius: 4px; background-color: #eee;"></button> -->
+      <div id="recordbtnstop" style="display: none; margin-bottom: 5px">
+        <button id="stopbtnwidth" class="recordbtnSave" name="stop">Save</button>
+      </div>
+      <div style=" margin-bottom: 5px">
+        <button class="micRecCancel" id="micRecCancel" name="micRecCancel">Stop</button>
+      </div>
+
+      <div id="audioplayer" style="display: none; margin-bottom: 5px">
+        <audio class="audioplayer" id="audio" controls></audio>
+      </div>
+      <div style="float: center; font-weight: bold;" id="status"></div>
+      <div id="timeRem" style="display:none; position: static; margin-top:20px; text-align: center; font-weight: bold;font-size: large;background-color: #eee;width: auto; border-radius: 4px;">
+        <!-- style="display:none; position: static; margin-top:20px; text-align: center; font-weight: bold;font-size: large;padding:22px;background-color: #eee;width: 200%; border: solid 1px #D3DADF; border-radius: 4px;"> -->
+      </div>
+      <div id="tabaudiodiv" style="display: none; margin-bottom: 5px; z-index: -100 !important;"
+        class="buttonContainer">
+        <div class="buttonStarting" id="start">Start Capture</div>
+        <div class="buttonSaving" id="finish">Save</div>
+        <div class="buttonCancel" id="cancel">Cancel</div>
+      </div>
+    </div>
+
+  <!-- <div id="tabmicrophone">
+    <button id="startButtonTab">Start Recording</button>
+    <button id="stopButtonTab">Stop Recording</button>
+  </div> -->
+
+  </div>
+
+
+
+  <!-- <video id="captured-video" autoplay width="640" height="480"></video> -->
+  <!-- <button id="save-button">Save Video</button> -->
+
+
+  <!-- <p><button id="btnStartCapture">start camera!</button></p>
+
+<div>
+ <div style="float:left;margin-right:5px;">
+  <p><video id="video-tag" width="240" height="180" autoplay ></video></p>
+ </div>
+ <div style="float:left">
+  <p><img id="image-tag" width="240"> </img></p>
+ </div>
+</div>
+  
+<div style="width: 240px">
+  <p><button id="btnStopCapture" >take photo</button></p>
+  <div hidden>
+    <label for="pan-slider">Pan</label>
+    <input id="pan-slider" min="0", max="0" name="pan" title="Pan" type="range" />
+    <output id="pan-slider-value"></output>
+  </div>
+  <div hidden>
+    <label for="tilt-slider">Tilt</label>
+    <input id="tilt-slider" min="0", max="0" name="tilt" title="Tilt" type="range" />
+    <output id="tilt-slider-value"></output>
+  </div>
+  <div hidden>
+    <label for="zoom-slider">Zoom</label>
+    <input id="zoom-slider" min="0", max="0" name="zoom" title="Zoom" type="range" />
+    <output id="zoom-slider-value"></output>
+  </div>
+</div> -->
+
+
+  <!-- <button id="tabCaptureStart">Start Recording</button>
+    <button id="tabCaptureStop">Stop Recording</button>
+    <video id="" controls></video> -->
+
+
+  <!-- <button id="startBtn">Start Recording</button>
+      <button id="stopBtn" disabled>Stop Recording</button>
+      <video id="preview" controls></video> -->
+
+  <!-- <video id="video2" autoplay muted></video>
+      <div id="bothaudioandtab">
+      <button id="rcdcamera2" >Record camera</button>
+      <button name="rcdstart" id="rcdstarting" >Record Screen and audio</button>
+      <button  id="rcdstopping" >Stop!</button>
+
+      </div> -->
+
+
+
+  <!-- <button id="enable-extension">Enable</button> -->
+
+  <div id='navigation'>
+    <!-- <div id='logo'><img src='../assets/images/popup/popup-logo.svg'>Curateit</div> -->
+    <!-- <div id='more'><img src='/assets/images/popup/popup-more.svg'></div> -->
+    <div id='more-select'>
+      <a id="shortcuts">Keyboard shortcuts</a>
+      <a id="quality">Smaller file size</a>
+      <a id="fps">60FPS video</a>
+      <a href="#" target="_blank">Twitter</a>
+      <a id="rateextension" href="#" target="_blank">Rate extension</a>
+      <a id="madeby" href="#" target="_blank">Made by Curateit</a>
+    </div>
+  </div>
+
+
+
+  <!-- <video id="gum" autoplay muted playsinline></video>
+          <video id="recorded" autoplay controls loop playsinline></video>
+      
+          <div>
+            <button id="record123">Start Recording</button>
+            <button id="play" disabled>Play</button>
+            <button id="download" disabled>Download</button>
+          </div> -->
+
+
+  <!-- <label class="check" for="onlyaudio">
+          <input type="checkbox" id="onlyaudio" />
+          </label>
+          <span></span>   
+          Only Audio Record
+      <p id="demo"></p>  -->
+
+  <div class="hideOnAudio" id='tabs'>
+    <div id='recording-type'>
+      <div id='tab-only' class='type type-active'><img src='../assets/images/popup/tab-only-active.svg'>
+        <p>Tab only</p>
+      </div>
+      <div id='desktop' class='type'><img src='../assets/images/popup/desktop.svg'>
+        <p>Desktop</p>
+      </div>
+      <div id='camera-only' class='type'><img src='../assets/images/popup/camera-only.svg'>
+        <p>Camera only</p>
+      </div>
+    </div>
+  </div>
+  <div class="hidebody" id='body'>
+    <label id="camera-select-label" class="hidecameraaudio" for="camera-select">Camera</label>
+    <select id="camera-select">
+      <option value='disabled'>Disabled</option>
+    </select>
+    <label id="fliphideonaudio" class='check'>
+      <input id='flip' type='checkbox'>
+      <span></span>
+      <labelp id="flip-label">Flip camera</labelp>
+    </label>
+    <label for="mic-select" id="mic-label">Microphone</label>
+    <select id="mic-select">
+      <option value='disabled'>Disabled</option>
+    </select>
+    <label class='check'>
+      <input id='push' type='checkbox'>
+      <span></span>
+      <labelp id="push-label">Push to talk</labelp> (Ctrl+M)
+    </label><br>
+    <label class='check'>
+      <input type='checkbox' id="countdown">
+      <span></span>
+      <p id='count-select'><text id='countdown-time'>3 </text>
+        <labelp id="second-label">second</labelp>
+      </p>
+      <labelp id="countdown-label">countdown</labelp>
+    </label><br>
+    <!-- <label class='check'>
+              <input id='onlyaudio' type='checkbox'>
+              <span></span>
+                <labelp id="onlyaudio-label">Only Audio</labelp>-->
+
+    <label class='check'>
+      <input id='persistent' type='checkbox'>
+      <span></span>
+      <labelp id="hover-label">Only show toolbar on hover</labelp>
+    </label>
+
+
+    <button id="record" style="margin-top: 10px"
+      class="record-disabled hide-recordbutton-whenaudio-only">Loading...</button>
+    <div id='countdown-select'>
+      <div id='3-seconds' class='countdown'>3 <labelp class="seconds-label">seconds</labelp>
+      </div>
+      <div id='5-seconds' class='countdown'>5 <labelp class="seconds-label">seconds</labelp>
+      </div>
+      <div id='10-seconds' class='countdown'>10 <labelp class="seconds-label">seconds</labelp>
+      </div>
+    </div>
+  </div>
+  <script src="../js/libraries/jquery-3.5.1.min.js"></script>
+  <script src="../js/libraries/jquery.nice-select.min.js"></script>
+  <script src="../js/libraries/bootstrap.min.js"></script>
+  <script src="../js/popup.js"></script>
+</body>
+
+</html>
