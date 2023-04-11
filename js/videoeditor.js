@@ -484,7 +484,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		// alert(format);
 		// console.log(format);
 		let startID = request.startID;
-		alert(startID);
+		//alert(startID);
 		// status.innerHTML = "Please wait..."
 		// closeButton.onclick = () => {
 		//   chrome.runtime.sendMessage({cancelEncodeID: startID});
@@ -507,6 +507,23 @@ document.addEventListener('DOMContentLoaded', () => {
 		//   status.innerHTML = "File is ready!"
 		const video = document.getElementById('video');
 		video.src = request.url;
+
+		const select = document.getElementById("format-select");
+
+	// Array of options
+	const options = [
+  	{ value: "mp3", label: "MP3" }
+		//   { value: "mp4", label: "mp4" },
+		//   { value: "webm", label: "WEBM" },
+		];
+		// Loop through the options and add them to the select element
+		options.forEach((option) => {
+		const optionElement = document.createElement("option");
+
+		optionElement.value = option.value;
+		optionElement.label = option.label;
+		select.appendChild(optionElement);
+		});
 		//  generateSave(url, blobs);
 		} else {
 		  encoding = true;
