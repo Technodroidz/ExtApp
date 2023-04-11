@@ -507,6 +507,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		//   status.innerHTML = "File is ready!"
 		const video = document.getElementById('video');
 		video.src = request.url;
+		video.style.width = '100%';
 
 		const select = document.getElementById("format-select");
 
