@@ -525,7 +525,19 @@ document.addEventListener('DOMContentLoaded', () => {
 		optionElement.label = option.label;
 		select.appendChild(optionElement);
 		});
+
+		$('#share').hide(); 
+
+		if ($('#download').click(function(){
+			chrome.downloads.download({
+				url: request.url
+		});
+		$("#download-label").html(chrome.i18n.getMessage("download"))
+
+		}));   
+		
 	
+		
 		//  generateSave(url, blobs);
 		} else {
 		  encoding = true;
