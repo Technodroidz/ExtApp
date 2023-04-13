@@ -1,6 +1,5 @@
 $(document).ready(function(){
 
-	alert(recordedBlobs);
 	var blobs = recordedBlobs;
 	var player;
 	var trimslider = document.getElementById('trimslider');
@@ -507,7 +506,15 @@ document.addEventListener('DOMContentLoaded', () => {
 		//   status.innerHTML = "File is ready!"
 		const video = document.getElementById('video');
 		video.src = request.url;
-		video.style.width = '100%';
+		video.style.width = '90%';
+		video.style.height = '600px';
+		video.style.backgroundColor = '#000';
+		video.style.padding = '20px';
+		video.style.margin = '20px';
+		video.style.radius = '5px';
+		// video.classList.add('mp3-player');
+		video.classList.add('progress-bar');
+		// video.classList.add('volume-controls');
 
 		const select = document.getElementById("format-select");
 
@@ -526,7 +533,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		select.appendChild(optionElement);
 		});
 
-		$('#share').hide(); 
+		// $('#share').hide(); 
 
 		if ($('#download').click(function(){
 			chrome.downloads.download({

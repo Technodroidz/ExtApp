@@ -536,6 +536,8 @@ $(document).ready(function () {
             $(tab1).hide(1000);
             // $("#mic-label2").style.display = "block"; //not working
             hidebodyab.style.display = 'none';
+            $("#more").hide();
+
             // $("#camera-select-label").style.display = 'none';          
             // $("#camera-select").style.display = 'none';      
             // $("#flip-label").style.display = 'none';          
@@ -545,6 +547,7 @@ $(document).ready(function () {
         showvideoalltab.addEventListener('click', () => {
             // tab1.style.display = 'inline-block';
             $(tab1).show(1000);
+            $("#more").show();
 
             hidebodyab.style.display = 'block';
         });
@@ -723,104 +726,102 @@ $(document).ready(function () {
 
     // });
 
-        const tabmicrophone = document.getElementById('tabmicrophone');
+        // const tabmicrophone = document.getElementById('tabmicrophone');
         const startButtontab = document.getElementById('startButtontab');
         const stopButtontab = document.getElementById('stopButtontab');
         var audio = document.querySelector('#audio');
 
-        tabmicrophone.addEventListener("click", () => {
+    //     tabmicrophone.addEventListener("click", () => {
 
-        // Set up audio context
-    //   const audioContext = new AudioContext();
-      const audioCtx = new AudioContext();
-        const destination = audioCtx.createMediaStreamDestination()
-        var output = new MediaStream();
-        var micable = true;
-        var micsource;
-        var syssource;
-        const streamSaver = window.streamSaver;
+    //   const audioCtx = new AudioContext();
+    //     const destination = audioCtx.createMediaStreamDestination()
+    //     var output = new MediaStream();
+    //     var micable = true;
+    //     var micsource;
+    //     var syssource;
+    //     const streamSaver = window.streamSaver;
 
 
 
 
-        chrome.tabs.query({active : true}, function(tab) {
-      // Request access to user's microphone
-      navigator.mediaDevices.getUserMedia({ audio: true })
-        .then(function(micStream) {
-          // Create MediaStreamAudioSourceNode from microphone stream
-          const micSource = audioCtx.createMediaStreamSource(micStream);
+    //     chrome.tabs.query({active : true}, function(tab) {
+    //   // Request access to user's microphone
+    //   navigator.mediaDevices.getUserMedia({ audio: true })
+    //     .then(function(micStream) {
+    //       // Create MediaStreamAudioSourceNode from microphone stream
+    //       const micSource = audioCtx.createMediaStreamSource(micStream);
 
-          // Request access to capture tab audio
-          chrome.tabCapture.capture({             
-            video: true,
-            audio: true,
-        }, 
+    //       // Request access to capture tab audio
+    //       chrome.tabCapture.capture({             
+    //         video: true,
+    //         audio: true,
+    //     }, 
             
-            function(stream) {
-                output = new MediaStream();
-                // syssource = audioCtx.createMediaStreamSource(stream);
-                // console.log('syssource', syssource);
+    //         function(stream) {
+    //             output = new MediaStream();
+    //             // syssource = audioCtx.createMediaStreamSource(stream);
+    //             // console.log('syssource', syssource);
     
-                // Keep playing tab audio
-                // audio.src = document.getElementById('audio');
-                // var context = new(window.AudioContext || window.webkitAudioContext)(),
-                // source = context.createMediaElementSource(audio);
-                // console.log("source", source);
+    //             // Keep playing tab audio
+    //             // audio.src = document.getElementById('audio');
+    //             // var context = new(window.AudioContext || window.webkitAudioContext)(),
+    //             // source = context.createMediaElementSource(audio);
+    //             // console.log("source", source);
 
-            // newRecording(output)
+    //         // newRecording(output)
             
-            // Hide the downloads shelf
-            chrome.downloads.setShelfEnabled(false);
+    //         // Hide the downloads shelf
+    //         chrome.downloads.setShelfEnabled(false);
 
-            // This will write the stream to the filesystem asynchronously
-            const { readable, writable } = new TransformStream({
-                transform: (chunk, ctrl) => chunk.arrayBuffer().then(b => ctrl.enqueue(new Uint8Array(b)))
-            })
+    //         // This will write the stream to the filesystem asynchronously
+    //         const { readable, writable } = new TransformStream({
+    //             transform: (chunk, ctrl) => chunk.arrayBuffer().then(b => ctrl.enqueue(new Uint8Array(b)))
+    //         })
 
-            const writer = writable.getWriter()
+    //         const writer = writable.getWriter()
 
-            let mediaRecorder = new MediaRecorder(stream);
+    //         let mediaRecorder = new MediaRecorder(stream);
             
 
-            // Start recording when button is clicked
-            startButtontab.addEventListener('click', ()  =>{
-                mediaRecorder.start();
-                       // Record tab stream
-            var recordedBlobs = [];
-            mediaRecorder.ondataavailable = event => {
-                if (event.data && event.data.size > 0) {
-                    writer.write(event.data);
-                    recordedBlobs.push(event.data);
-                    const url = URL.createObjectURL(recordedBlobs);
-                const downloadLink = document.createElement('a');
-                downloadLink.href = audioUrl;
-                downloadLink.download = 'recording.wav';
-                document.body.appendChild(downloadLink);
-                downloadLink.click();
-                }
-            };
-            });
+    //         // Start recording when button is clicked
+    //         startButtontab.addEventListener('click', ()  =>{
+    //             mediaRecorder.start();
+    //                    // Record tab stream
+    //         var recordedBlobs = [];
+    //         mediaRecorder.ondataavailable = event => {
+    //             if (event.data && event.data.size > 0) {
+    //                 writer.write(event.data);
+    //                 recordedBlobs.push(event.data);
+    //                 const url = URL.createObjectURL(recordedBlobs);
+    //             const downloadLink = document.createElement('a');
+    //             downloadLink.href = audioUrl;
+    //             downloadLink.download = 'recording.wav';
+    //             document.body.appendChild(downloadLink);
+    //             downloadLink.click();
+    //             }
+    //         };
+    //         });
 
-            // Stop recording and download audio file when button is clicked
-            stopButtontab.addEventListener('click', () => {
-                mediaRecorder.stop();
+    //         // Stop recording and download audio file when button is clicked
+    //         stopButtontab.addEventListener('click', () => {
+    //             mediaRecorder.stop();
 
-                saveRecordingAudio("file://" + '../html/videoeditor.html', recordedBlobs);
+    //             saveRecordingAudio("file://" + '../html/videoeditor.html', recordedBlobs);
 
 
               
            
 
-            });
-          });
-        })
-        .catch(function(error) {
-          console.error(error);
-        });
+    //         });
+    //       });
+    //     })
+    //     .catch(function(error) {
+    //       console.error(error);
+    //     });
 
-    });
+    // });
 
-    });
+    // });
 
 
 
@@ -1053,11 +1054,11 @@ document.addEventListener('DOMContentLoaded', function () {
     cancelButton.onclick = () => { chrome.runtime.sendMessage("cancelCapture") };
     chrome.runtime.getPlatformInfo((info) => {
         if (info.os === "mac") {
-            startKey.innerHTML = "Command + Shift + U to start capture on current tab";
-            endKey.innerHTML = "Command + Shift + X to stop capture on current tab";
+            // startKey.innerHTML = "Command + Shift + U to start capture on current tab";
+            // endKey.innerHTML = "Command + Shift + X to stop capture on current tab";
         } else {
-            startKey.innerHTML = "Ctrl + Shift + S to start capture on current tab";
-            endKey.innerHTML = "Ctrl + Shift + X to stop capture on current tab";
+            // startKey.innerHTML = "Ctrl + Shift + S to start capture on current tab";
+            // endKey.innerHTML = "Ctrl + Shift + X to stop capture on current tab";
         }
     })
     //   const options = document.getElementById("options");

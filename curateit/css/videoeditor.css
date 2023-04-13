@@ -3,6 +3,51 @@ html, body {
     background-color: #FBFBFB;
     font-size: unset;
 }
+
+.mp3-player {
+    display: flex;
+    align-items: center;
+    width: 300px;
+    height: 60px;
+    background-color: #f2f2f2;
+    border-radius: 10px;
+    padding: 10px;
+  }
+
+  .progress-bar {
+    width: 100%;
+    height: 5px;
+    background-color: #ccc;
+    border-radius: 5px;
+    margin: 0 10px;
+  }
+
+  .progress-bar .progress {
+    height: 100%;
+    background-color: #ff5722;
+    border-radius: 5px;
+  }
+
+  .volume-controls {
+    display: flex;
+    align-items: center;
+  }
+  
+  .volume-up,
+  .volume-down {
+    background-image: url('volume.png');
+    background-size: contain;
+    width: 30px;
+    height: 30px;
+    border: none;
+    outline: none;
+  }
+  
+  .volume-down {
+    transform: rotate(180deg);
+    margin-left: 10px;
+  }
+
 .noselect {
     user-select: none;
 }
