@@ -516,10 +516,136 @@ $(document).ready(function () {
             hidebodyab.style.display = 'block';
         });
 
+         var audioTab = document.getElementById("hidevideotab");
+         audioTab.addEventListener("click", function() {
+         var micLabel2Div = document.getElementById("mic-label2");
+         micLabel2Div.style.display = "block";
+
+         var recordDiv = document.getElementById("audiorecording");
+         recordDiv.style.display = "block";
+        // $("#audiobtnrecord").show();  
+        var startRecord = document.getElementById("audiobtnrecord");    
+        startRecord.addEventListener('click', function () {
+
+            var saveDiv = document.getElementById("recordbtnstop");
+            saveDiv.style.display = "block";
+                startTimer();
+                $("#timerNew").show();
+                $("#micRecCancel").show();
+               // $("#stopbtnwidth").show();
+
+                timeRem.style.display = "none";
+                // $("#timeRem").hide();
+
+                const cancelButton = document.getElementById('cancel');
+                var btnStart = document.querySelector('button[name="record"]');
+                var btnStop = document.querySelector('button[name="stop"]');
+                var btnCancel = document.querySelector('button[name="micRecCancel"]');
+                var audio = document.querySelector('#audio');
+                const audioCtx = new AudioContext();
+                const destination = audioCtx.createMediaStreamDestination();  
+
+                btnStart.addEventListener('click', async () => {
+                    await navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(function (stream) {
+                        var audiodevices = [];
+                        navigator.mediaDevices.enumerateDevices().then(function (devices) {
+                            devices.forEach(function (device) {
+                                if (device.kind == "audioinput") {
+                                    audiodevices.push({ label: device.label, id: device.deviceId });
+                                    console.log(audiodevices);
+                                }
+                                chrome.runtime.sendMessage({ type: "audio-done", devices: audiodevices });
+                                // chrome.runtime.sendMessage({type: "format_sel"});
+                                // $("#format_sel").html("<select><option value='mp4'>"+'MP4'+"</option></select>");
+
+                            });
+                            getAudio(audiodevices);
+                        });
 
 
+                        output = new MediaStream();
+                        syssource = audioCtx.createMediaStreamSource(stream);
+                        console.log('syssource', syssource);
+                        // output.addTrack(destination.stream.getAudioTracks()[0]);
+
+                        // output.addTrack(stream.getVideoTracks()[0]);
+
+
+
+                        let mediaRecorder = new MediaRecorder(stream);
+                        mediaRecorder.start();
+                        timerRunning = true;
+                        var recordedBlobs = [];
+                        mediaRecorder.ondataavailable = (e) => {
+                            recordedBlobs.push(e.data);
+                            console.log("chunks", recordedBlobs);
+                            console.log("e-daata", e.data);
+
+                        }
+
+                        // btnStart.textContent = 'Stop Record';
+
+
+
+                        $("#audioplayer").hide();
+                        $("#audiorecording").hide();
+                        $("#recordbtnstop").show();
+
+
+
+
+
+                        //function to catch error
+                        mediaRecorder.onerror = (e) => {
+                            alert(e.error);
+                        }
+
+                        mediaRecorder.onstop = (e) => {
+
+                            let blob = new Blob(recordedBlobs, { mimeType: "audio/mp3" });
+
+
+                            //create url for audio
+                            let url = URL.createObjectURL(blob);
+                            //pass url into audio tag
+                            audio.src = url;
+                            console.log("blod size", blob);
+                            // console.log("blod size", audio.src);
+                            //  let size = blob.size;   
+                        }
+                        btnStop.addEventListener('click', () => {
+
+                            mediaRecorder.stop();
+                            stopTimer();
+                            // $("#audioplayer").show();
+                            $("#recordbtnstop").hide();
+
+                            saveRecordingAudio("file://" + '../html/videoeditor.html', recordedBlobs);
+
+                        });
+
+                        btnCancel.addEventListener("click", () => {
+                            // mediaRecorder.stop();
+                            stopTimer();
+                            $("#timerNew").hide();
+                        })
+
+
+
+                    }).catch(function (error) {
+                        $("#mic-select").html("<option value='disabled'>" + chrome.i18n.getMessage("disabled_allow_access") + "</option>");
+                    });
+
+                })
+
+
+            });
+             
+           
+         });
+        
+        
         selectAudio.addEventListener('change', (event) => {
-
 
             if (event.target.value === 'micro') {
 
@@ -532,7 +658,6 @@ $(document).ready(function () {
                 recordbtnstop2.style.display = 'none';
                 tabaudiodiv.style.display = 'none';
                 $(timeRem).hide();
-
 
 
                 const cancelButton = document.getElementById('cancel');
