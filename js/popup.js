@@ -22,7 +22,6 @@ $(document).ready(function () {
     // $('#onlyaudio').niceSelect();
     // $('.selectAll').niceSelect();
 
-
     // Get default settings (set by the user)
     chrome.storage.sync.get(null, function (result) {
         if (!result.toolbar) {
