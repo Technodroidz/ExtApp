@@ -516,6 +516,7 @@ $(document).ready(function () {
             hidebodyab.style.display = 'block';
         });
 
+       
          var audioTab = document.getElementById("hidevideotab");
          audioTab.addEventListener("click", function() {
          var micLabel2Div = document.getElementById("mic-label2");
@@ -525,13 +526,12 @@ $(document).ready(function () {
          recordDiv.style.display = "block";
         // $("#audiobtnrecord").show();  
         var startRecord = document.getElementById("audiobtnrecord");   
-        startRecord.addEventListener('click', function () {
+        startRecord.addEventListener('click', async () => {
 
             
             var saveDiv = document.getElementById("recordbtnstop");
             saveDiv.style.display = "block";
     
-
                 startTimer();
                 $("#timerNew").show();
                 $("#micRecCancel").show();
@@ -547,8 +547,9 @@ $(document).ready(function () {
                 var audio = document.querySelector('#audio');
                 const audioCtx = new AudioContext();
                 const destination = audioCtx.createMediaStreamDestination();  
+                    
 
-                btnStart.addEventListener('click', async () => {
+                // btnStart.addEventListener('click', async () => {
                     await navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(function (stream) {
                         var audiodevices = [];
                         navigator.mediaDevices.enumerateDevices().then(function (devices) {
@@ -639,7 +640,7 @@ $(document).ready(function () {
                         $("#mic-select").html("<option value='disabled'>" + chrome.i18n.getMessage("disabled_allow_access") + "</option>");
                     });
 
-                })
+                // })
 
 
             });
