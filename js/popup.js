@@ -524,6 +524,9 @@ $(document).ready(function () {
 
          var recordDiv = document.getElementById("audiorecording");
          recordDiv.style.display = "block";
+
+          
+
         // $("#audiobtnrecord").show();  
         var startRecord = document.getElementById("audiobtnrecord");   
         startRecord.addEventListener('click', async () => {
