@@ -36,7 +36,7 @@
   ],
 	"content_security_policy": "script-src 'self' 'unsafe-eval' chrome-extension://kbbdabhdfibnancpjfhlkhafgdilcnji/js/libraries/ffmpeg.js 'unsafe-inline'; object-src 'self'",
   "permissions": [
-    "<all_urls>","activeTab", "tabCapture", "tabs", "downloads", "storage", "identity", "https://www.googleapis.com/*", "downloads.shelf", "file://*"
+    "<all_urls>","activeTab", "desktopCapture" ,"tabCapture", "tabs", "downloads", "storage", "identity", "https://www.googleapis.com/*", "downloads.shelf", "file://*"
   ],
   "web_accessible_resources": [        
     "js/complete.js","js/options.js","js/worker.js","html/options.html","html/complete.html","html/error.html","html/camera.html","html/sources.html","html/settings.html","js/content.js","js/libraries/ffmpeg.js", "css/content.css","assets/images/*","js/sources.js", "js/cameracontent.js", "css/cameracontent.css", "js/libraries/plyr.min.js", "js/libraries/StreamSaver.min.js", "css/libraries/plyr.min.css", "js/audiosources.js", "html/audiosources.html"

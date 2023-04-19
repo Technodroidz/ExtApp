@@ -750,9 +750,6 @@ chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
         if (request.type == "record") {
             startRecording();
-        } else if (request.type == "format_sel") {
-            formatonlyaudio();
-            sendResponse({ success: true });
         } else if (request.type == "resume") {
         } else if (request.type == "pause") {
             pauseRecording();
@@ -762,6 +759,15 @@ chrome.runtime.onMessage.addListener(
             sendResponse({ success: true });
         } else if (request.type == "stop-save") {
             stopRecording(request.type);
+            if (!cancel) {
+                newwindow = window.open('../html/videoeditor.html', "_blank");
+                newwindow.recordedBlobs = recordedBlobs;
+                newwindow.url = "";
+        }
+            // saveRecording("", request.blobs);
+
+            // saveRecording("", recordedBlobs);
+
         } else if (request.type == "stop-cancel") {
             stopRecording(request.type);
         } else if (request.type == "audio-request") {
@@ -803,12 +809,17 @@ chrome.runtime.onMessage.addListener(
         } else if (request.type == "record-request") {
             sendResponse({ recording: recording });
         } else if (request.type == "pause-camera") {
+            alert('pause');
+
             chrome.tabs.getSelected(null, function (tab) {
                 chrome.tabs.sendMessage(tab.id, {
                     type: "pause-camera"
                 });
+                
             });
+            
         } else if (request.type == "resume-camera") {
+
             chrome.tabs.getSelected(null, function (tab) {
                 chrome.tabs.sendMessage(tab.id, {
                     type: "resume-record"
@@ -830,7 +841,10 @@ chrome.runtime.onMessage.addListener(
                 });
             });
             if (!request.cancel) {
-                saveRecording("", request.blobs);
+                // saveRecording("", request.blobs);
+                // saveRecording("", request.blobs);
+                saveRecording("file://" + '../html/videoeditor.html', request.blobs);
+
             }
         } else if (request.type == "sources-loaded") {
             pageUpdated(sender);

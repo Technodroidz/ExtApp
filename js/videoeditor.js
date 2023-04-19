@@ -301,7 +301,7 @@ $(document).ready(function(){
 					setting: ['captions', 'quality', 'speed', 'loop'],
 					ratio: '16:9',
 					captions: { active: true, language: 'auto', update: true },
-					quality : { default: 720, options: [720, 576, 480],
+					quality : { default: 1440, options: [2160, 1440,1080, 720, 576, 480],
 					forced: true
 				    // onChange: null
 				 },

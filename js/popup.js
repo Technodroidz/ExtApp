@@ -828,97 +828,172 @@ $(document).ready(function () {
         const stopButtontab = document.getElementById('stopButtontab');
         var audio = document.querySelector('#audio');
 
-    //     tabmicrophone.addEventListener("click", () => {
-
-    //   const audioCtx = new AudioContext();
-    //     const destination = audioCtx.createMediaStreamDestination()
-    //     var output = new MediaStream();
-    //     var micable = true;
-    //     var micsource;
-    //     var syssource;
-    //     const streamSaver = window.streamSaver;
 
 
+    function saveRecordingCanvas(url, blobs) {
+        newwindow = window.open('../html/videoeditor.html');
+        newwindow.url = url;
+        newwindow.recordedBlobs = blobs;
+        newwindow.type = 'video';
 
 
-    //     chrome.tabs.query({active : true}, function(tab) {
-    //   // Request access to user's microphone
-    //   navigator.mediaDevices.getUserMedia({ audio: true })
-    //     .then(function(micStream) {
-    //       // Create MediaStreamAudioSourceNode from microphone stream
-    //       const micSource = audioCtx.createMediaStreamSource(micStream);
-
-    //       // Request access to capture tab audio
-    //       chrome.tabCapture.capture({             
-    //         video: true,
-    //         audio: true,
-    //     }, 
-            
-    //         function(stream) {
-    //             output = new MediaStream();
-    //             // syssource = audioCtx.createMediaStreamSource(stream);
-    //             // console.log('syssource', syssource);
-    
-    //             // Keep playing tab audio
-    //             // audio.src = document.getElementById('audio');
-    //             // var context = new(window.AudioContext || window.webkitAudioContext)(),
-    //             // source = context.createMediaElementSource(audio);
-    //             // console.log("source", source);
-
-    //         // newRecording(output)
-            
-    //         // Hide the downloads shelf
-    //         chrome.downloads.setShelfEnabled(false);
-
-    //         // This will write the stream to the filesystem asynchronously
-    //         const { readable, writable } = new TransformStream({
-    //             transform: (chunk, ctrl) => chunk.arrayBuffer().then(b => ctrl.enqueue(new Uint8Array(b)))
-    //         })
-
-    //         const writer = writable.getWriter()
-
-    //         let mediaRecorder = new MediaRecorder(stream);
-            
-
-    //         // Start recording when button is clicked
-    //         startButtontab.addEventListener('click', ()  =>{
-    //             mediaRecorder.start();
-    //                    // Record tab stream
-    //         var recordedBlobs = [];
-    //         mediaRecorder.ondataavailable = event => {
-    //             if (event.data && event.data.size > 0) {
-    //                 writer.write(event.data);
-    //                 recordedBlobs.push(event.data);
-    //                 const url = URL.createObjectURL(recordedBlobs);
-    //             const downloadLink = document.createElement('a');
-    //             downloadLink.href = audioUrl;
-    //             downloadLink.download = 'recording.wav';
-    //             document.body.appendChild(downloadLink);
-    //             downloadLink.click();
-    //             }
-    //         };
-    //         });
-
-    //         // Stop recording and download audio file when button is clicked
-    //         stopButtontab.addEventListener('click', () => {
-    //             mediaRecorder.stop();
-
-    //             saveRecordingAudio("file://" + '../html/videoeditor.html', recordedBlobs);
+    }
 
 
-              
-           
+// const canvasRecord = document.querySelector('#startRecordingss');
+// const stopcanvasRecord = document.querySelector('#stopRecordingss');
 
-    //         });
-    //       });
-    //     })
-    //     .catch(function(error) {
-    //       console.error(error);
-    //     });
+// // Define variables to store the selected area
+// let x, y, width, height;
 
-    // });
+// // Add event listener to Select Area button
+// document.getElementById('select-area').addEventListener('click', function() {
+//       // Show custom area selection tool
+//   let canvas = document.createElement('canvas');
+// 		canvas.id = "myCanvas";
+// 		document.body.appendChild(canvas);
+// //   canvas.width = window.innerWidth;
+// canvas.width = 640;
+// canvas.height = 480;
+// //   canvas.height = window.innerHeight;
+//   canvas.style.position = 'fixed';
+//   canvas.style.top = '0';
+//   canvas.style.left = '0';
+//   canvas.style.zIndex = '9999';
+//   document.body.appendChild(canvas);
 
-    // });
+//   let context = canvas.getContext('2d');
+//   context.fillStyle = 'white';
+//   context.fillRect(0, 0, canvas.width, canvas.height);
+
+//   let startX, startY;
+
+//   canvas.addEventListener('mousedown', function(event) {
+//     console.log("mousedown", event);
+//     startX = event.clientX;
+//     startY = event.clientY;
+//   });
+
+//   canvas.addEventListener('mouseup', function(event) {
+//     console.log("mouseup", event);
+//     let endX = event.clientX;
+//     let endY = event.clientY;
+//     x = Math.min(startX, endX);
+//     y = Math.min(startY, endY);
+//     width = Math.abs(startX - endX);
+//     height = Math.abs(startY - endY);
+//     canvas.parentNode.removeChild(canvas);
+//     startRecordingCanvas();
+//   });
+
+//   context.fillStyle = 'rgba(0,0,0,0.5)';
+//   context.fillRect(0, 0, canvas.width, canvas.height);
+// });
+
+
+
+
+
+// canvasRecord.addEventListener('click', function() {
+    function startRecordingCanvas() {
+
+
+    // let mediaConstraints = {
+    //     video: {
+    //       mandatory: {
+    //         chromeMediaSource: 'screen',
+    //         chromeMediaSourceId: 'screen',
+    //         minWidth: width,
+    //         minHeight: height,
+    //         maxWidth: width,
+    //         maxHeight: height,
+    //         minAspectRatio: 1.77
+    //       }
+    //     }
+    //   };
+
+    // const constraints = {
+    //     video: {
+    //       width: { exact: 640 },
+    //       height: { exact: 480 },
+    //       facingMode: { exact: "environment" },
+    //       aspectRatio: { exact: 4/3 },
+    //       frameRate: { max: 30 },
+    //       resizeMode: "crop-and-scale",
+    //       displaySurface: "application",
+    //       cursor: "always",
+    //       regionOfInterest: {
+    //         top: 0,
+    //         left: 0,
+    //         width: 640,
+    //         height: 480
+    //       }
+    //     },
+    //     audio: true
+    //   };
+
+
+
+    // Get the display media (screen or tab or window)
+    //       displaySurface: "application",
+navigator.mediaDevices.getDisplayMedia({video:true, audio:true, resizeMode: "crop-and-scale",cursor: "always"}).then(stream => {
+
+    // Create a new MediaRecorder object
+    let mediaRecorder = new MediaRecorder(stream);
+  
+    // Create a list to store the recorded chunks
+    let recordedBlobs = [];
+  
+    // Start recording
+    mediaRecorder.start();
+  
+    // Listen for dataavailable event
+    mediaRecorder.addEventListener('dataavailable', event => {
+        recordedBlobs.push(event.data);
+      console.log("chunks", recordedBlobs);
+    });
+  
+    // Stop recording after 10 seconds
+    setTimeout(() => {
+      mediaRecorder.stop();
+      stream.getVideoTracks()[0].stop();
+    }, 10000);
+  
+    // Listen for stop event (when recording is finished)
+    mediaRecorder.addEventListener('stop', () => {
+  
+      // Create a new blob from the recorded chunks
+      let blob = new Blob(recordedBlobs, { type: 'video/webm' });
+  
+      // Create a URL for the blob
+      let url = URL.createObjectURL(blob);
+  
+      // Create a video element and set its source to the recorded video
+      let video = document.createElement('video');
+      video.src = url;
+      video.onloadedmetadata = () => {
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+      };
+      saveRecordingCanvas("file://" + '../html/videoeditor.html', recordedBlobs);
+
+  
+      // Append the video element to the document body
+      document.body.appendChild(video);
+      stopcanvasRecord.addEventListener('click',function(){
+        saveRecordingCanvas("file://" + '../html/videoeditor.html', recordedBlobs);
+
+      });
+    });
+  
+  }).catch(error => {
+    console.error(error);
+  });
+  
+  };
+  
+  
+
+
 
 
 
