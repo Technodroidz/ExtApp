@@ -84,6 +84,7 @@ function newRecording(stream) {
 // Save recording
 var recordedBlobs = []
 function saveRecording(url, blobs) {
+   // alert(blobs);
     newwindow = window.open('../html/videoeditor.html');
     newwindow.url = url;
     newwindow.recordedBlobs = blobs;
@@ -631,7 +632,7 @@ function pushToTalk(request, id) {
 // Countdown is over / recording can start
 function countdownOver() {
     if (recording_type == "camera-only") {
-
+   
         if ($('#countdown').attr('checked')) {
             alert("Check box in Checked");
     
@@ -758,14 +759,20 @@ chrome.runtime.onMessage.addListener(
             resumeRecording();
             sendResponse({ success: true });
         } else if (request.type == "stop-save") {
+            if(recording_type == "tab-only" || recording_type == "desktop" ){
             stopRecording(request.type);
-            if (!cancel) {
-                newwindow = window.open('../html/videoeditor.html', "_blank");
-                newwindow.recordedBlobs = recordedBlobs;
-                newwindow.url = "";
-        }
-            // saveRecording("", request.blobs);
-
+            } 
+        //      if (request.type !== "cancel") {
+        // //         newwindow = window.open('../html/videoeditor.html', "_blank");
+        // //         newwindow.recordedBlobs = recordedBlobs;
+        // //         newwindow.url = "";
+        
+        //  }
+        // alert(request.blobs);
+        // if (!request.cancel) {
+        //     saveRecording("", request.blobs);
+        // }
+        // saveRecording("file://" + '../html/videoeditor.html', request.blobs);
             // saveRecording("", recordedBlobs);
 
         } else if (request.type == "stop-cancel") {
