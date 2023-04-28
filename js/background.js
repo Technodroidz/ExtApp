@@ -3,7 +3,7 @@ const destination = audioCtx.createMediaStreamDestination();
 var output = new MediaStream();
 var micsource;
 var syssource;
-var mediaRecorder = '';
+var mediaRecorder = ''; 
 var mediaConstraints;
 var micstream;
 var audiodevices = [];
@@ -1069,7 +1069,7 @@ const extend = function() { //helper function to merge objects
             mediaRecorder.finishRecording();
             chrome.tabs.create({url: "../html/videoeditor.html"}, (tab) => {
               completeTabID = tab.id;
-              
+              alert("redirecting to editor page");
               let completeCallback = () => {
                 chrome.tabs.sendMessage(tab.id, {type: "audio", format: format, url, startID: startTabId});
               }
