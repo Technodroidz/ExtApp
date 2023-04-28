@@ -1069,7 +1069,7 @@ const extend = function() { //helper function to merge objects
             mediaRecorder.finishRecording();
             chrome.tabs.create({url: "../html/videoeditor.html"}, (tab) => {
               completeTabID = tab.id;
-              alert("redirecting to editor page");
+              alert("saving...");
               let completeCallback = () => {
                 chrome.tabs.sendMessage(tab.id, {type: "audio", format: format, url, startID: startTabId});
               }
