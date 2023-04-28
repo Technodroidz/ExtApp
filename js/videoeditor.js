@@ -14,7 +14,7 @@ $(document).ready(function(){
     var superBuffer = new Blob(recordedBlobs, {
 				type: 'video/webm'
 		});
-	console.log("sup", superBuffer);
+	// console.log("sup", superBuffer);
 
 	
 		// Create the src url from the blob. #t=duration is a Chrome bug workaround, as the webm generated through Media Recorder has a N/A duration in its metadata, so you can't seek the video in the player. Using Media Fragments (https://www.w3.org/TR/media-frags/#URIfragment-user-agent) and setting the duration manually in the src url fixes the issue.
@@ -301,7 +301,7 @@ $(document).ready(function(){
 					setting: ['captions', 'quality', 'speed', 'loop'],
 					ratio: '16:9',
 					captions: { active: true, language: 'auto', update: true },
-					quality : { default: 1440, options: [2160, 1440,1080, 720, 576, 480],
+					quality : { default: 1080, options: [2160, 1440,1080, 720, 576, 480],
 					forced: true
 				    // onChange: null
 				 },
@@ -476,7 +476,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	let format;
 	let encoding = false;
 	chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-		console.log(request);
+		// console.log(request);
 	  if(request.type == "audio") {
 		format = request.format;
 

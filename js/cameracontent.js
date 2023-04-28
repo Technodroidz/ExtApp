@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    const uniqueid = "curateit-screen-recorder-extension-camera";
+    const uniqueid = "screenity-screen-recorder-extension-camera";
     var micon = false;
     var recording = false;
     var cameradevices = [];

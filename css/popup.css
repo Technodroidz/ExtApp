@@ -39,6 +39,36 @@ body, html {
     width: 300px !important;
   }
 
+  .recMarandDisplay {
+    display: none; 
+    margin-bottom: 5px
+  }
+
+  .microphoneTimer {
+    display:none; 
+    margin-top:20px; 
+    position: relative; 
+    width: auto; 
+    border: none; 
+    margin-left: 190; 
+    font-weight: bold;
+    font-size: large; 
+    border-radius: 4px; 
+    background-color: #eee;
+  }
+
+  .audio_Tab{
+    display:none; 
+    position: static; 
+    margin-top:20px; 
+    text-align: center; 
+    font-weight: bold;
+    font-size: large;
+    background-color: #eee;
+    width: auto; 
+    border-radius: 4px;
+  }
+
 
   .tabAudio{
     text-align: center;

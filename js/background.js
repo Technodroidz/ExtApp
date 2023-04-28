@@ -14,7 +14,6 @@ var maintabs = [];
 var camtabs = [];
 var recording_type = "tab-only";
 var pushtotalk;
-var onlyaudio;
 var newwindow = null;
 var micable = true;
 var width = 1920;
@@ -45,8 +44,6 @@ chrome.runtime.onInstalled.addListener(function () {
         fps: 60,
         start: 0,
         total: 0,
-        onlyaudio:false,
-        format
     });
 
     // Inject content scripts in existing tabs
@@ -84,7 +81,6 @@ function newRecording(stream) {
 // Save recording
 var recordedBlobs = []
 function saveRecording(url, blobs) {
-   // alert(blobs);
     newwindow = window.open('../html/videoeditor.html');
     newwindow.url = url;
     newwindow.recordedBlobs = blobs;
@@ -127,11 +123,13 @@ function endRecording(stream, writer, recordedBlobs) {
     chrome.downloads.setShelfEnabled(true);
 
     setTimeout(() => {
+
         writer.close();
         chrome.downloads.search({ limit: 1 }, function (data) {
             // Save recording if requested
             if (!cancel) {
                 saveRecording("file://" + data[0].filename, recordedBlobs);
+
             } else {
                 chrome.downloads.removeFile(data[0].id);
             }
@@ -175,7 +173,7 @@ function getDesktop() {
             transform: (chunk, ctrl) => chunk.arrayBuffer().then(b => ctrl.enqueue(new Uint8Array(b)))
         })
         const writer = writable.getWriter()
-        readable.pipeTo(streamSaver.createWriteStream('screenity.webm'));
+        readable.pipeTo(streamSaver.createWriteStream('curateit.webm'));
 
         // Record tab stream
         var recordedBlobs = [];
@@ -489,14 +487,6 @@ function pauseRecording() {
     });
 }
 
-// format-select-onlyaudio
-function formatonlyaudio(){
-        
-    chrome.runtime.sendMessage({type: "format_sel"});
-    $("#format_sel").html(chrome.i18n.getMessage("format_sel"));         
-    
-}
-
 function resumeRecording() {
     mediaRecorder.resume();
 
@@ -632,7 +622,7 @@ function pushToTalk(request, id) {
 // Countdown is over / recording can start
 function countdownOver() {
     if (recording_type == "camera-only") {
-   
+
         if ($('#countdown').attr('checked')) {
             alert("Check box in Checked");
     
@@ -652,31 +642,6 @@ function countdownOver() {
             recording = true;
         }
     }
-}
-
-// onlyaudio is  recording can start
-function onlyaudio() {
-    // if (recording_type == "camera-only") {
-
-        if ($('#onlyaudio').attr('checked')) {
-            alert("Check box in Checked for onlyaudio");
-    
-          } else {
-            alert("Check box in unChecked");
-    
-          }
-
-        chrome.tabs.getSelected(null, function (tab) {
-            chrome.tabs.sendMessage(tab.id, {
-                type: "only-audio"
-            });
-        });
-    // } else {
-    //     if (!recording) {
-    //         mediaRecorder.start(1000);
-    //         recording = true;
-    //     }
-    // }
 }
 
 // Inject content when tab redirects while recording
@@ -702,9 +667,12 @@ chrome.tabs.onActivated.addListener(function (tabId, changeInfo, tab) {
     if (!recording) {
         // Hide injected content if the recording is already over
         chrome.tabs.getSelected(null, function (tab) {
-            chrome.tabs.sendMessage(tab.id, {
-                type: "end"
-            });
+            if (tab && tab.id) {
+                chrome.tabs.sendMessage(tab.id, {
+                    type: "end"
+                });
+            }
+        
         });
     } else if (recording && recording_type == "desktop" && maintabs.indexOf(tabId) == -1) {
         // Inject content for entire desktop recordings (content should be on any tab)
@@ -762,19 +730,13 @@ chrome.runtime.onMessage.addListener(
             if(recording_type == "tab-only" || recording_type == "desktop" ){
             stopRecording(request.type);
             } 
-        //      if (request.type !== "cancel") {
-        // //         newwindow = window.open('../html/videoeditor.html', "_blank");
-        // //         newwindow.recordedBlobs = recordedBlobs;
-        // //         newwindow.url = "";
-        
-        //  }
-        // alert(request.blobs);
-        // if (!request.cancel) {
-        //     saveRecording("", request.blobs);
-        // }
-        // saveRecording("file://" + '../html/videoeditor.html', request.blobs);
-            // saveRecording("", recordedBlobs);
+            else if (recording_type == "camera-only") {
+            alert("Save");
 
+            stopRecording(request.type);
+            // saveRecording("file://" + '../html/videoeditor.html', recordedBlobs);
+
+            }
         } else if (request.type == "stop-cancel") {
             stopRecording(request.type);
         } else if (request.type == "audio-request") {
@@ -816,7 +778,8 @@ chrome.runtime.onMessage.addListener(
         } else if (request.type == "record-request") {
             sendResponse({ recording: recording });
         } else if (request.type == "pause-camera") {
-            alert('pause');
+            console.log(request.type);
+        // alert("stream pause", request.type);
 
             chrome.tabs.getSelected(null, function (tab) {
                 chrome.tabs.sendMessage(tab.id, {
@@ -848,9 +811,9 @@ chrome.runtime.onMessage.addListener(
                 });
             });
             if (!request.cancel) {
-                // saveRecording("", request.blobs);
-                // saveRecording("", request.blobs);
-                saveRecording("file://" + '../html/videoeditor.html', request.blobs);
+                saveRecording("", request.blobs);
+                // saveRecording("file://" + '../html/videoeditor.html', request.blobs);
+
 
             }
         } else if (request.type == "sources-loaded") {
@@ -864,13 +827,6 @@ chrome.runtime.onMessage.addListener(
             chrome.tabs.getSelected(null, function (tab) {
                 chrome.tabs.sendMessage(tab.id, {
                     type: "hello"
-                });
-            });
-        }// format
-        else if (request.type == "format") {
-            chrome.tabs.getSelected(null, function (tab) {
-                chrome.tabs.sendMessage(tab.id, {
-                    type: "format"
                 });
             });
         }

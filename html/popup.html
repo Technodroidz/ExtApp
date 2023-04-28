@@ -11,9 +11,7 @@
   <link rel="stylesheet" href="../css/libraries/bootstrap.min.css">
   <link rel="stylesheet" href="../css/popup.css">
   <script src="../js/libraries/jquery-3.5.1.min.js"></script>
-  <script src="../js/libraries/jquery.nice-select.min.js"></script>
-  <script src="../js/libraries/bootstrap.min.js"></script>
-  <script src="../js/popup.js"></script>
+  
 </head>
 
 <body>
@@ -50,23 +48,25 @@
 
 
     <div id="mic-label2" style="display: none;">
-    <label  for="mic-select2" >Microphone</label>
+    <!-- <label  for="mic-select2" >Microphone</label>
     <select class="ni-select tabSelectWidth custom-width" id="audiotype">
       <option   value='Default'>Default - Microphone Array</option>
       <option  value='Communications'>Communications - Microphone Array</option>
       <option  value='disabled'>Microphone Array</option>
-      <!-- <option   value='Default'>Default - Microphone Array<br /> (Realtek(R) Audio)</option>
-      <option  value='Communications'>Communications - Microphone Array<br /> (Realtek(R) Audio)</option>
-      <option  value='disabled'>Microphone Array<br /> (Realtek(R) Audio)</option> -->
+    </select> -->
+    <label for="mic-select2 tabSelectWidth custom-width" id="mic-label">Microphone</label>
+    <select  class="ni-select" id="mic-select2">
+      <option value='disabled'>Disabled</option>
     </select>
     </div>
 
-      <div id="audiorecording" style="display: none; margin-bottom: 5px">
+      <div id="audiorecording" class="recMarandDisplay">
         <button id="audiobtnrecord" type="button" class="recordbtn" name="record">Record</button>
 
       </div>
 
-      <button id="timerNew" style="display:none; margin-top:20px; position: relative; width: auto; border: none; margin-left: 190; font-weight: bold;font-size: large; border-radius: 4px; background-color: #eee;"></button>
+      <!-- <button id="timerNew" class="microphoneTimer" style="display:none; margin-top:20px; position: relative; width: auto; border: none; margin-left: 190; font-weight: bold;font-size: large; border-radius: 4px; background-color: #eee;"></button> -->
+      <button id="timerNew" class="microphoneTimer"></button>
       <!-- <button id="timerNew" style="display:none; margin-top:20px; position: relative; width: 357px; border: 1px solid #a8a8af; margin-left: 190; font-weight: bold;font-size: large; padding: 22px; border-radius: 4px; background-color: #eee;"></button> -->
       <div id="recordbtnstop" style="display: none; margin-bottom: 5px">
         <button id="stopbtnwidth" class="recordbtnSave" name="stop">Save</button>
@@ -79,7 +79,8 @@
         <audio class="audioplayer" id="audio" controls></audio>
       </div>
       <div style="float: center; font-weight: bold;" id="status"></div>
-      <div id="timeRem" style="display:none; position: static; margin-top:20px; text-align: center; font-weight: bold;font-size: large;background-color: #eee;width: auto; border-radius: 4px;">
+      <!-- <div id="timeRem" class="audio_Tab" style="display:none; position: static; margin-top:20px; text-align: center; font-weight: bold;font-size: large;background-color: #eee;width: auto; border-radius: 4px;"> -->
+        <div id="timeRem" class="audio_Tab">
         <!-- style="display:none; position: static; margin-top:20px; text-align: center; font-weight: bold;font-size: large;padding:22px;background-color: #eee;width: 200%; border: solid 1px #D3DADF; border-radius: 4px;"> -->
       </div>
       <div id="tabaudiodiv" style="display: none; margin-bottom: 5px; z-index: -100 !important;"
@@ -99,6 +100,7 @@
   <button id="stopRecordingss">Stop Recording</button>
   <canvas id="myCanvas"></canvas>
   <button id="select-area">select-area</button> -->
+
 
 
 
@@ -262,7 +264,9 @@
     </div>
   </div>
  
-
+  <script src="../js/libraries/jquery.nice-select.min.js"></script>
+  <script src="../js/libraries/bootstrap.min.js"></script>
+  <script src="../js/popup.js"></script>
 </body>
 
 </html>

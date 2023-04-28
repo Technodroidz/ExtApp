@@ -74,13 +74,13 @@ function streamingError(error) {
 //               recordedBlobs.push(event.data);
 //             }
 //         };
-       
+        
 //         // When the recording has been stopped
 //         mediaRecorder.onstop = () => {
 // 					// Show default icon
 // 					chrome.browserAction.setIcon({path: "../assets/extension-icons/logo-32.png"});
 // 					recording = false;
-                   
+
 // 					if (!cancel) {
 // 							newwindow = window.open('../html/videoeditor.html', "_blank");
 // 							newwindow.recordedBlobs = recordedBlobs;
@@ -133,12 +133,34 @@ function startRecording(){
               recordedBlobs.push(event.data);
             }
         };
+
+        mediaRecorder.pause = () => {
+		chrome.browserAction.setIcon({path: "../assets/extension-icons/logo-32.png"});
+
+            alert("Saving");
+            // mediaRecorder.stop(); // Stop the recorder
+            // let recording_type;
+            // if (recording_type === "camera-only" && request.type === "stop-save") {
+                saveRecording("file://" + '../html/videoeditor.html', recordedBlobs);
+                // alert(recordedBlobs);
+            // }
+
+
+            // saveRecording("file://" + '../html/videoeditor.html', recordedBlobs);
+            stream.getTracks().forEach(function(track) { // use the stream parameter to stop the tracks
+                track.stop();
+            });
+        }
+
+
        
         // When the recording has been stopped
         mediaRecorder.onstop = () => {
+            // alert("stop");
 					// Show default icon
 					chrome.browserAction.setIcon({path: "../assets/extension-icons/logo-32.png"});
 					recording = false;
+                    // alert("outside cancel abc");
                    
 					if (!cancel) {
 							// newwindow = window.open('../html/videoeditor.html', "_blank");
@@ -146,6 +168,7 @@ function startRecording(){
 							// newwindow.url = "";
                             // newwindow.type = 'video';
                             saveRecording("file://" + '../html/videoeditor.html', recordedBlobs);
+                            console.log(recordedBlobs);
 					}
 
 					stream.getTracks().forEach(function(track) { // use the stream parameter to stop the tracks
@@ -166,6 +189,7 @@ function saveRecording(url, blobs) {
      newwindow.type = 'video';
  
  }
+
 
 // Change camera source
 function updateCamera(id){
@@ -245,16 +269,15 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
           micsource.connect(destination);
         }
     } else if (request.type == "pause-camera") {
-        mediaRecorder.pause();
+        if (mediaRecorder) {
+            mediaRecorder.pause();
+        }
     } else if (request.type == "resume-camera") {
-        mediaRecorder.resume();
+        if (mediaRecorder) {
+            mediaRecorder.resume();
+        }
     } else if (request.type == "update-mic") {
         updateMic(request.id);
-    } else if (request.type == "stop-save") {
-        if (recording) {
-            cancel = false;
-            mediaRecorder.stop();
-        }
     } else if (request.type == "stop-cancel") {
         if (recording) {
             cancel = true;

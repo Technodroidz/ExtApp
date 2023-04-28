@@ -125,6 +125,24 @@ $(document).ready(function () {
                 chrome.runtime.sendMessage({ type: "update-mic", id: $("#mic-select").val() });
             }
         });
+
+        $("#mic-select2").html("<option value='disabled'>" + chrome.i18n.getMessage("disabled") + "</option>");
+        audio.forEach(function (device) {
+            if (device.label == "Disabled") {
+                $("#mic-select2").append("<option value='" + device.id + "'>" + chrome.i18n.getMessage("disabled") + "</option>");
+            } else {
+                $("#mic-select2").append("<option value='" + device.id + "'>" + device.label + "</option>");
+            }
+        });
+        $("#mic-select2").niceSelect('update');
+        chrome.storage.sync.get(['mic'], function (result) {
+            if (result.mic != 0) {
+                $('#mic-select2').val(result.mic).niceSelect('update');
+            } else {
+                $('#mic-select2').val($("#mic-select2 option:nth-child(2)").val()).niceSelect('update');
+                chrome.runtime.sendMessage({ type: "update-mic", id: $("#mic-select2").val() });
+            }
+        });
     }
 
     // Get available camera devices
@@ -357,18 +375,18 @@ $(document).ready(function () {
 
 
     // format-select-onlyaudio
-    function formatonlyaudio() {
+    // function formatonlyaudio() {
 
-        chrome.runtime.sendMessage({ type: "format" }, function (result) {
-            var format;
-            format = result.format;
-            if (result.format) {
-                $("#format_sel").html(chrome.i18n.getMessage("mp3"));
-            }
-            console.log('format', format)
+    //     chrome.runtime.sendMessage({ type: "format" }, function (result) {
+    //         var format;
+    //         format = result.format;
+    //         if (result.format) {
+    //             $("#format_sel").html(chrome.i18n.getMessage("mp3"));
+    //         }
+    //         console.log('format', format)
 
-        });
-    }
+    //     });
+    // }
 
     // chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
     //     var myTabId = tabs[0].id;
@@ -445,7 +463,8 @@ $(document).ready(function () {
         //     selectedDiv.style.display = "block";
         //   });
 
-        selectAudio.addEventListener("change", (event) => {
+        if (selectAudio) {
+            selectAudio.addEventListener("change", (event) => {
             
             if (event.target.value == 'micro') {
                 
@@ -470,6 +489,7 @@ $(document).ready(function () {
 
             }
         });
+    }
 
 
         function startTimer() {
@@ -491,7 +511,8 @@ $(document).ready(function () {
             }
         }
 
-        hidevideoalltab.addEventListener('click', () => {
+        if (hidevideoalltab) {
+                    hidevideoalltab.addEventListener('click', () => {
             
             // showselected();
 
@@ -507,19 +528,27 @@ $(document).ready(function () {
             // $("#push").style.display = 'none';   
             // $("#push-label").style.display = 'none';         
         });
-        showvideoalltab.addEventListener('click', () => {
-            // tab1.style.display = 'inline-block';
-            $(tab1).show(1000);
-            $("#more").show();
 
-            hidebodyab.style.display = 'block';
-        });
+         }
+         if (showvideoalltab) { 
+            showvideoalltab.addEventListener('click', () => {
+                // tab1.style.display = 'inline-block';
+                $(tab1).show(1000);
+                $("#more").show();
+
+                hidebodyab.style.display = 'block';
+            });
+         }
+
 
        
          var audioTab = document.getElementById("hidevideotab");
+         if (audioTab) {
          audioTab.addEventListener("click", function() {
          var micLabel2Div = document.getElementById("mic-label2");
-         micLabel2Div.style.display = "block";
+         if (micLabel2Div) {
+             micLabel2Div.style.display = "block";
+            }
 
          var recordDiv = document.getElementById("audiorecording");
          recordDiv.style.display = "block";
@@ -649,8 +678,11 @@ $(document).ready(function () {
              
            
          });
+
+        }
         
-        
+        if (selectAudio) {
+            
         selectAudio.addEventListener('change', (event) => {
 
             if (event.target.value === 'micro') {
@@ -790,7 +822,7 @@ $(document).ready(function () {
                 startCapture.addEventListener('click', function () {
 
                     $(timeRem).show();
-                    startCapture.show();
+                    $(startCapture).show();
 
 
                 });
@@ -819,6 +851,7 @@ $(document).ready(function () {
             }
 
         });
+    }
 
 
     // });
@@ -843,22 +876,25 @@ $(document).ready(function () {
 // const canvasRecord = document.querySelector('#startRecordingss');
 // const stopcanvasRecord = document.querySelector('#stopRecordingss');
 
-// // Define variables to store the selected area
+// Define variables to store the selected area
 // let x, y, width, height;
+// let isDragging = false;
+// let startX = 0;
+// let startY = 0;
+// let endX = 0;
+// let endY = 0;
 
-// // Add event listener to Select Area button
+// Add event listener to Select Area button
 // document.getElementById('select-area').addEventListener('click', function() {
 //       // Show custom area selection tool
 //   let canvas = document.createElement('canvas');
 // 		canvas.id = "myCanvas";
 // 		document.body.appendChild(canvas);
-// //   canvas.width = window.innerWidth;
-// canvas.width = 640;
-// canvas.height = 480;
-// //   canvas.height = window.innerHeight;
 //   canvas.style.position = 'fixed';
 //   canvas.style.top = '0';
 //   canvas.style.left = '0';
+//   canvas.style.width = '100%';
+//   canvas.style.height = '100%';
 //   canvas.style.zIndex = '9999';
 //   document.body.appendChild(canvas);
 
@@ -866,73 +902,77 @@ $(document).ready(function () {
 //   context.fillStyle = 'white';
 //   context.fillRect(0, 0, canvas.width, canvas.height);
 
-//   let startX, startY;
+// //   let startX, startY;
 
 //   canvas.addEventListener('mousedown', function(event) {
+    
 //     console.log("mousedown", event);
 //     startX = event.clientX;
 //     startY = event.clientY;
+//     isDragging = true;
+//     startRecordingTab(x, y, width, height);
+
 //   });
 
-//   canvas.addEventListener('mouseup', function(event) {
-//     console.log("mouseup", event);
-//     let endX = event.clientX;
-//     let endY = event.clientY;
+//   canvas.addEventListener('mousemove', (event) => {
+//     if (isDragging) {
+//       endX = event.clientX;
+//       endY = event.clientY;
+  
+//       // Clear the canvas
+//       context.clearRect(0, 0, canvas.width, canvas.height);
+  
+//       // Draw the video frames onto the canvas
+//     //   context.drawImage(video, 0, 0, canvas.width, canvas.height);
+  
+//       // Draw the rectangle
+//       const width = endX - startX;
+//       const height = endY - startY;
+//       context.strokeStyle = 'red';
+//       context.strokeRect(startX, startY, width, height);
+//     }
+//   });
+
+// //   canvas.addEventListener('mouseup', function(event) {
+// //     console.log("mouseup", event);
+// //     let endX = event.clientX;
+// //     let endY = event.clientY;
+// //     x = Math.min(startX, endX);
+// //     y = Math.min(startY, endY);
+// //     width = Math.abs(startX - endX);
+// //     height = Math.abs(startY - endY);
+// //     canvas.parentNode.removeChild(canvas);
+// //     startRecordingCanvas();
+// //   });
+
+// canvas.addEventListener('mouseup', () => {
+//     isDragging = false;
 //     x = Math.min(startX, endX);
 //     y = Math.min(startY, endY);
 //     width = Math.abs(startX - endX);
 //     height = Math.abs(startY - endY);
 //     canvas.parentNode.removeChild(canvas);
-//     startRecordingCanvas();
+//     // startRecordingCanvas();
+
 //   });
 
-//   context.fillStyle = 'rgba(0,0,0,0.5)';
-//   context.fillRect(0, 0, canvas.width, canvas.height);
+//   document.body.appendChild(canvas);
+
 // });
+
+
+  
+  
+  
+  
+  
 
 
 
 
 
 // canvasRecord.addEventListener('click', function() {
-    function startRecordingCanvas() {
-
-
-    // let mediaConstraints = {
-    //     video: {
-    //       mandatory: {
-    //         chromeMediaSource: 'screen',
-    //         chromeMediaSourceId: 'screen',
-    //         minWidth: width,
-    //         minHeight: height,
-    //         maxWidth: width,
-    //         maxHeight: height,
-    //         minAspectRatio: 1.77
-    //       }
-    //     }
-    //   };
-
-    // const constraints = {
-    //     video: {
-    //       width: { exact: 640 },
-    //       height: { exact: 480 },
-    //       facingMode: { exact: "environment" },
-    //       aspectRatio: { exact: 4/3 },
-    //       frameRate: { max: 30 },
-    //       resizeMode: "crop-and-scale",
-    //       displaySurface: "application",
-    //       cursor: "always",
-    //       regionOfInterest: {
-    //         top: 0,
-    //         left: 0,
-    //         width: 640,
-    //         height: 480
-    //       }
-    //     },
-    //     audio: true
-    //   };
-
-
+    function startRecordingCanvas__() {
 
     // Get the display media (screen or tab or window)
     //       displaySurface: "application",
@@ -972,13 +1012,21 @@ navigator.mediaDevices.getDisplayMedia({video:true, audio:true, resizeMode: "cro
       let video = document.createElement('video');
       video.src = url;
       video.onloadedmetadata = () => {
+          // Set the canvas size to the video size
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+
+         // Draw the video frames onto the canvas
+  setInterval(() => {
         context.drawImage(video, 0, 0, canvas.width, canvas.height);
+    }, 16);
       };
-      saveRecordingCanvas("file://" + '../html/videoeditor.html', recordedBlobs);
+      video.play();
+    //   saveRecordingCanvas("file://" + '../html/videoeditor.html', recordedBlobs);
 
   
       // Append the video element to the document body
-      document.body.appendChild(video);
+    //   document.body.appendChild(video);
       stopcanvasRecord.addEventListener('click',function(){
         saveRecordingCanvas("file://" + '../html/videoeditor.html', recordedBlobs);
 
@@ -1049,16 +1097,19 @@ navigator.mediaDevices.getDisplayMedia({video:true, audio:true, resizeMode: "cro
             });
         } else if (request.type == "sources-audio-noaccess") {
             audioRequest();
-        } else if (request.type == "format") {
-            $("#format_sel").html(chrome.i18n.getMessage("mp3"));
-
         }
+        //  else if (request.type == "format") {
+        //     $("#format_sel").html(chrome.i18n.getMessage("mp3"));
+
+        // }
     });
 
     // Localization (strings in different languages)
     $("#camera-select").html("<option value='disabled'>" + chrome.i18n.getMessage("disabled") + "</option>");
     $("#mic-select").html("<option value='disabled'>" + chrome.i18n.getMessage("disabled") + "</option>");
     $("#mic-select").niceSelect('update');
+    $("#mic-select2").html("<option value='disabled'>" + chrome.i18n.getMessage("disabled") + "</option>");
+    $("#mic-select2").niceSelect('update');
     $("#camera-select").niceSelect('update');
     $("#shortcuts").html(chrome.i18n.getMessage("keyboard_shortcuts"));
     $("#quality").html(chrome.i18n.getMessage("smaller_file_size"));
@@ -1078,7 +1129,7 @@ navigator.mediaDevices.getDisplayMedia({video:true, audio:true, resizeMode: "cro
     $("#record").html(chrome.i18n.getMessage("loading"));
     $("#madeby1").html(chrome.i18n.getMessage("made_by_Curateit1"));
     $("#onlyaudio-label").html(chrome.i18n.getMessage("microphoneonlymic"));
-    $("#format_sel").html(chrome.i18n.getMessage("mp3"));
+    // $("#format_sel").html(chrome.i18n.getMessage("mp3"));
 
 
 
@@ -1135,10 +1186,16 @@ const displayStatus = function () { //function to handle the display of time and
                         }, 1000);
                     }
                 });
-                finishButton.style.display = "block";
-                cancelButton.style.display = "block";
+                if (finishButton) {
+                    finishButton.style.display = "block";
+                }
+                if (cancelButton) {
+                    cancelButton.style.display = "block";
+                }
             } else {
+                if (startButton) {
                 startButton.style.display = "block";
+                }
             }
         });
         // }
@@ -1198,9 +1255,15 @@ chrome.runtime.onMessage.addListener((request, sender) => {
                     }, 1000);
                 }
             });
+            if (finishButton) {
             finishButton.style.display = "block";
+            }
+            if (cancelButton) {
             cancelButton.style.display = "block";
+            }
+            if (startButton) {
             startButton.style.display = "none";
+            }
         } else if (request.captureStopped && request.captureStopped === tabs[0].id) {
             status.innerHTML = "";
             finishButton.style.display = "none";
@@ -1221,9 +1284,15 @@ document.addEventListener('DOMContentLoaded', function () {
     const startButton = document.getElementById('start');
     const finishButton = document.getElementById('finish');
     const cancelButton = document.getElementById('cancel');
+    if (startButton) {
     startButton.onclick = () => { chrome.runtime.sendMessage("startCapture") };
+    }
+    if (finishButton) {
     finishButton.onclick = () => { chrome.runtime.sendMessage("stopCapture") };
+    }
+    if (cancelButton) {
     cancelButton.onclick = () => { chrome.runtime.sendMessage("cancelCapture") };
+    }
     chrome.runtime.getPlatformInfo((info) => {
         if (info.os === "mac") {
             // startKey.innerHTML = "Command + Shift + U to start capture on current tab";
